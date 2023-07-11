@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# function to add Python3 shebang to file
+add_shebang() {
+  if [[ $(head -n1 "$filename") != "#!"* ]]; then
+    echo "#!/usr/bin/python3" > "$filename"
+  fi
+}
+
+# function to make file executable
+make_executable() {
+  chmod +x "$1"
+  echo "File is now executable: $1"
+}
+
+# function to check file using pycodestyle
+check_pycodestyle() {
+  if ! pycodestyle "$1"; then
+    echo "pycodestyle check failed for file: $1"
+    exit 1
+  fi
+}
+
+# function to prompt for a filename
+prompt_filename() {
+	 read -p "Enter the name of the file: " filename
+
+  # check if file exists
+  if [ ! -f "$filename" ]; then
+	  touch "$filename"
+  fi
+}
+
+if [ $# -eq 1 ] && [ $1 -ge 1 ] && [ $1 -le 3 ]; then
+  choice=$1
+else
+  # prompt user to choose a script
+  echo "Choose a script to run:"
+  echo "1. Git"
+  echo "2. Vi"
+  echo "3. Chmod"
+  read -p "Enter your choice: " choice
+fi
+
+case $choice in
+  1)
+    # Git script
+    read -p "Enter commit message: " message
+    git add .
+    git commit -m "$message"
+    git push
+    ;;
+  2)
+    # Vi script
+    prompt_filename
+    add_shebang "$filename"
+    vi "+set nu" "$filename"
+    
+    # ask if file should be made executable
+    read -p "Do you want to make the file executable? (y/n) " make_executable
+
+    if [ "$make_executable" == "y" ] || [ "$make_executable" == "Y" ]; then
+      make_executable "$filename"
+    fi
+
+    # ask if file should be checked using pycodestyle
+    read -p "Do you want to check the file using pycodestyle? (y/n) " check
+
+    if [ "$check" == "y" ] || [ "$check" == "Y" ]; then
+      check_pycodestyle "$filename"
+    fi
+    ;;
+  3)
+    # Chmod script
+    read -p "Enter the name of the file to make executable:" filename
+
+    # check if file exists
+    if [ ! -f "$filename" ]; then
+      echo "File not found: $filename"
+      exit 1
+    fi
+
+    # check if file is already executable
+    if [ -x "$filename" ]; then
+      echo "File is already executable: $filename"
+      exit 0
+    fi
+
+    # make file executable
+    make_executable "$filename"
+    ;;
+  *)
+    echo "Invalid choice"
+    exit 1
+    ;;
+esac
+
+exit 0
+
