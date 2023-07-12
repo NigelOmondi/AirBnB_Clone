@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Defines a user class"""
+from models.base_model import BaseModel
 
-
-class User:
+class User(BaseModel):
     """Represents a user class
        Attr:
             ::email(str): A str holding users email.
