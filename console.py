@@ -68,7 +68,7 @@ class HBNBCommand(cmd.Cmd):
             print("** Class doesn't exist **")
         elif len(args) < 2:
             print("** instance id missing **")
-        elif ""{}.{}"".format(arg[0], arg[1]) not in allinstances:
+        elif "{}.{}".format(arg[0], arg[1]) not in allinstances:
             print("** no instance found**")
         else:
             print(allinstances["{}.{}".format(args[0], args[1])])
@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) == 4:
             parentobj = allinstances["{}.{}".format(args[0], args[1])]
             if args[2] in parentobj.__class__.__dict__.keys():
-                attr_type = type(parentobj.__class__.dict__.[args[2]])
+                attr_type = type(parentobj.__class__.dict__[args[2]])
                 parentobj.__dict__[args[2]] = attr_type(args[3])
             else:
                 parentobj.__dict__[args[2]] = args[3]
