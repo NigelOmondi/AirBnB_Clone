@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             print(allinstances["{}.{}".format(args[0], args[1])])
 
-    def destroy(self, arg):
+    def do_destroy(self, arg):
         """Deletes an intance based on the class name and id.
         usage: $ destroy <classname> <instance id>
         """
@@ -92,7 +92,7 @@ class HBNBCommand(cmd.Cmd):
             del allinstances["{}.{}".format(args[0], args[1])]
             storage.save()
 
-    def all(self, args):
+    def do_all(self, args):
         """Prints all string representation of all instances.
         usage: $ all <class name>(optional)"""
 
@@ -109,7 +109,7 @@ class HBNBCommand(cmd.Cmd):
                     tempdict.append(instance.__str__())
             print(tempdict)
 
-    def update(self, arg):
+    def do_update(self, arg):
         """Updates an instance based on calss name and id
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
@@ -154,6 +154,19 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     parentobj.__dict__[key] = value
         storage.save()
+
+        def do_count(self):
+            """Prints the nnumber of instances of a class.
+            Usage: $ count <class> / $ <class>.count()
+            """
+
+            args = parse(arg)
+            allinstances = storage.all()
+            count = 0
+            for instance in allinstances.values():
+                if args[0] == instance.__class__.__name__:
+                    count += 1
+            print(count)
 
 
 if __name__ == '__main__':
