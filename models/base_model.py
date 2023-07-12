@@ -14,7 +14,7 @@ class BaseModel:
                 :: *args(*): Unutilised.
                 :: **kwargs(dict): A Key/Value pair of arguments/attributes
         """
-        self.id = uuid4()
+        self.id = str(uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         ISOformat = "%Y-%m-%dT%H:%M:%S.%f"

@@ -9,6 +9,24 @@ from models.city import City
 from models.state import State
 from models.amenity import Amenity
 from models.review import Review
+import re
+from shlex import split
+
+def parse(arg):
+    braces = re.search(r"\{(.*?)\}", arg)
+    brackets = re.search(r"\[(.*?)\]", arg)
+    if braces:
+        tokens = split(arg[:braces.span()[0]])
+        token = [brace.strip(",") for brace in tokens]
+        token.append(braces.group())
+        return token
+    elif brackets:
+        tokens = split(arg[:brackets.span()[0]])
+        token = [bracket.strip(",") for bracket in tokens]
+        token.append(brackets.group())
+        return token
+    else:
+        return [tokens.strip(",") for tokens in split(arg)]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -68,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
             print("** Class doesn't exist **")
         elif len(args) < 2:
             print("** instance id missing **")
-        elif "{}.{}".format(arg[0], arg[1]) not in allinstances:
+        elif "{}.{}".format(args[0], args[1]) not in allinstances:
             print("** no instance found**")
         else:
             print(allinstances["{}.{}".format(args[0], args[1])])
@@ -78,7 +96,7 @@ class HBNBCommand(cmd.Cmd):
         usage: $ destroy <classname> <instance id>
         """
 
-        args = parse(args)
+        args = parse(arg)
         allinstances = storage.all()
         if len(args) == 0:
             print("** class name missing **")
@@ -92,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
             del allinstances["{}.{}".format(args[0], args[1])]
             storage.save()
 
-    def do_all(self, args):
+    def do_all(self, arg):
         """Prints all string representation of all instances.
         usage: $ all <class name>(optional)"""
 
@@ -101,13 +119,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             allinstances = storage.all()
-            tempdict = {}
-            for instance in allintances.value():
-                if len(args) > 1 and args[0] == instance.__class__.__name__:
-                    tempdict.append(instance.__str__())
+            tempstr = []
+            for instance in allinstances.values():
+                if len(args) > 0 and args[0] == instance.__class__.__name__:
+                    tempstr.append(instance.__str__())
                 elif len(args) == 0:
-                    tempdict.append(instance.__str__())
-            print(tempdict)
+                    tempstr.append(instance.__str__())
+            print(tempstr)
 
     def do_update(self, arg):
         """Updates an instance based on calss name and id
