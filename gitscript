@@ -15,7 +15,7 @@ make_executable() {
 
 # function to check file using pycodestyle
 check_pycodestyle() {
-  if ! pycodestyle.exe "1"; then
+  if ! pycodestyle.exe "$1"; then
     echo "pycodestyle check failed for file: $1"
     exit 1
   fi
