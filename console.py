@@ -18,14 +18,14 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
     __classnames = {
-            "BaseModel",
-            "User",
-            "Place",
-            "City",
-            "State",
-            "Amenity",
-            "Review"
-            }
+        "BaseModel",
+        "User",
+        "Place",
+        "City",
+        "State",
+        "Amenity",
+        "Review"
+    }
 
     def emptyline(self):
         """Does nothing on empty line + Enter key."""
@@ -41,14 +41,12 @@ class HBNBCommand(cmd.Cmd):
         """Exits the console/program.
         Usage: $ quit
         """
-
         return True
 
     def do_create(self, arg):
         """Creates and prints id of a new instance.
         Usage: $ create <Instance name>
         """
-
         args = parse(arg)
         if len(args) == 0:
             print("** class name missing **")
@@ -110,6 +108,52 @@ class HBNBCommand(cmd.Cmd):
                 elif len(args) == 0:
                     tempdict.append(instance.__str__())
             print(tempdict)
+
+    def update(self, arg):
+        """Updates an instance based on calss name and id
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """
+
+        allinstances = storage.all()
+        args = parse(arg)
+        if len(args) == 0:
+            print("** class name missing **")
+            return False
+        elif args[0] not in HBNBCommand.__classnames:
+            print("** class doesn't exist **")
+            return False
+        elif len(args) < 2:
+            print("** instance id missing **")
+            return False
+        elif "{}.{}".format(args[0], args[1]) not in allinstances:
+            print("** no instance found **")
+            return False
+        elif len(args) < 3:
+            print("** attribute name missing **")
+        elif len(args) == 3:
+            try:
+                type(eval(args[2])) != dict
+            except NameError:
+                print("** value missing **")
+                return False
+        elif len(args) == 4:
+            parentobj = allinstances["{}.{}".format(args[0], args[1])]
+            if args[2] in parentobj.__class__.__dict__.keys():
+                attr_type = type(parentobj.__class__.dict__.[args[2]])
+                parentobj.__dict__[args[2]] = attr_type(args[3])
+            else:
+                parentobj.__dict__[args[2]] = args[3]
+        elif type(eval(args[2])) == dict:
+            parentobj = allinstances["{}.{}".format(args[0], args[1])]
+            for key, value in eval(args[2]).items():
+                if (key in parentobj.__class.__dict__.keys() and
+                        type(parentobj.__class__.__dict__[key]) in
+                        {int, float, str}):
+                    attr_type = type(parentobj.__class__.dict__[key])
+                    parentobj.__dict__[key] = attr_type(value)
+                else:
+                    parentobj.__dict__[key] = value
+        storage.save()
 
 
 if __name__ == '__main__':
