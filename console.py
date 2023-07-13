@@ -12,7 +12,13 @@ from models.review import Review
 import re
 from shlex import split
 
-def parse(arg):
+
+def tokenizer(arg):
+    """Parsses the arguments into valid tokens.
+    Args:
+        :: arg: string containing user input from terminal.
+    """
+
     braces = re.search(r"\{(.*?)\}", arg)
     brackets = re.search(r"\[(.*?)\]", arg)
     if braces:
@@ -45,9 +51,39 @@ class HBNBCommand(cmd.Cmd):
         "Review"
     }
 
+    def default(self, arg):
+        """Specifies the default behaviour incase of unrecognised input.
+        Args:
+            :: arg(str): user input.
+        """
+
+        argnames = {
+            "show": self.do_show,
+            "all": self.do_all,
+            "destroy": self.do_destroy,
+            "update": self.do_update,
+            "count": self.do_count
+            }
+
+        dotpattern = r"\."
+        argpattern = r"\((.*?)\)"
+        dotrslt = re.search(dotpattern, arg)
+        if dotrslt is None:
+            print("*** Unknown syntax: {}".format(arg))
+            return False
+        else:
+            args = [arg[:dotrslt.span()[0]], arg[dotrslt.span()[1]:]]
+            argrslt = re.search(argpattern, args[1])
+            if argrslt is not None:
+                args1 = [args[1][:argrslt.span()[0]], argrslt.group()[1:-1]]
+                if args1[0] in argnames.keys():
+                    command = "{} {}".format(args[0], args1[1])
+                    return argnames[args1[0]](command)
+        print("*** Unknown syntax: {}".format(arg))
+        return False
+
     def emptyline(self):
         """Does nothing on empty line + Enter key."""
-
         pass
 
     def do_EOF(self, arg):
@@ -65,7 +101,7 @@ class HBNBCommand(cmd.Cmd):
         """Creates and prints id of a new instance.
         Usage: $ create <Instance name>
         """
-        args = parse(arg)
+        args = tokenizer(arg)
         if len(args) == 0:
             print("** class name missing **")
         elif args[0] not in HBNBCommand.__classnames:
@@ -78,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         """Prints a str representation of an instance.
         Usage: $ show <classname> <instance id>
         """
-        args = parse(arg)
+        args = tokenizer(arg)
         allinstances = storage.all()
         if len(args) == 0:
             print("** class name missing **")
@@ -96,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         usage: $ destroy <classname> <instance id>
         """
 
-        args = parse(arg)
+        args = tokenizer(arg)
         allinstances = storage.all()
         if len(args) == 0:
             print("** class name missing **")
@@ -114,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances.
         usage: $ all <class name>(optional)"""
 
-        args = parse(arg)
+        args = tokenizer(arg)
         if len(args) > 0 and args[0] not in HBNBCommand.__classnames:
             print("** class doesn't exist **")
         else:
@@ -133,7 +169,7 @@ class HBNBCommand(cmd.Cmd):
         """
 
         allinstances = storage.all()
-        args = parse(arg)
+        args = tokenizer(arg)
         if len(args) == 0:
             print("** class name missing **")
             return False
@@ -173,18 +209,18 @@ class HBNBCommand(cmd.Cmd):
                     parentobj.__dict__[key] = value
         storage.save()
 
-        def do_count(self):
-            """Prints the nnumber of instances of a class.
-            Usage: $ count <class> / $ <class>.count()
-            """
+    def do_count(self, arg):
+        """Prints the nnumber of instances of a class.
+        Usage: $ count <class> / $ <class>.count()
+        """
 
-            args = parse(arg)
-            allinstances = storage.all()
-            count = 0
-            for instance in allinstances.values():
-                if args[0] == instance.__class__.__name__:
-                    count += 1
-            print(count)
+        args = tokenizer(arg)
+        allinstances = storage.all()
+        count = 0
+        for instance in allinstances.values():
+            if args[0] == instance.__class__.__name__:
+                count += 1
+        print(count)
 
 
 if __name__ == '__main__':
