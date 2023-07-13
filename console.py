@@ -87,8 +87,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_EOF(self, arg):
-        """Quits the program on EOF signal. """
-
+        """Quits the program on EOF signal."""
         return True
 
     def do_quit(self, arg):
@@ -99,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Creates and prints id of a new instance.
-        Usage: $ create <Instance name>
+        Usage: $ create <class name>
         """
         args = tokenizer(arg)
         if len(args) == 0:
@@ -148,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Prints all string representation of all instances.
-        usage: $ all <class name>(optional)"""
+        Usage: $ all <class name>(optional)"""
 
         args = tokenizer(arg)
         if len(args) > 0 and args[0] not in HBNBCommand.__classnames:
@@ -164,8 +163,8 @@ class HBNBCommand(cmd.Cmd):
             print(tempstr)
 
     def do_update(self, arg):
-        """Updates an instance based on calss name and id
-        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """Updates an instance based on the class name and id.
+        Usage: update <class name> <id> <attribute name> <attribute value>
         """
 
         allinstances = storage.all()
@@ -210,7 +209,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_count(self, arg):
-        """Prints the nnumber of instances of a class.
+        """Prints the number of instances of a class.
         Usage: $ count <class> / $ <class>.count()
         """
 
