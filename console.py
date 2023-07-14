@@ -172,37 +172,38 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return False
-        elif args[0] not in HBNBCommand.__classnames:
+        if args[0] not in HBNBCommand.__classnames:
             print("** class doesn't exist **")
             return False
-        elif len(args) < 2:
+        if len(args) < 2:
             print("** instance id missing **")
             return False
-        elif "{}.{}".format(args[0], args[1]) not in allinstances:
+        if "{}.{}".format(args[0], args[1]) not in allinstances:
             print("** no instance found **")
             return False
-        elif len(args) < 3:
+        if len(args) < 3:
             print("** attribute name missing **")
-        elif len(args) == 3:
+            return False
+        if len(args) == 3:
             try:
                 type(eval(args[2])) != dict
             except NameError:
                 print("** value missing **")
                 return False
-        elif len(args) == 4:
+        if len(args) == 4:
             parentobj = allinstances["{}.{}".format(args[0], args[1])]
             if args[2] in parentobj.__class__.__dict__.keys():
-                attr_type = type(parentobj.__class__.dict__[args[2]])
+                attr_type = type(parentobj.__class__.__dict__[args[2]])
                 parentobj.__dict__[args[2]] = attr_type(args[3])
             else:
                 parentobj.__dict__[args[2]] = args[3]
         elif type(eval(args[2])) == dict:
             parentobj = allinstances["{}.{}".format(args[0], args[1])]
             for key, value in eval(args[2]).items():
-                if (key in parentobj.__class.__dict__.keys() and
+                if (key in parentobj.__class__.__dict__.keys() and
                         type(parentobj.__class__.__dict__[key]) in
                         {int, float, str}):
-                    attr_type = type(parentobj.__class__.dict__[key])
+                    attr_type = type(parentobj.__class__.__dict__[key])
                     parentobj.__dict__[key] = attr_type(value)
                 else:
                     parentobj.__dict__[key] = value
