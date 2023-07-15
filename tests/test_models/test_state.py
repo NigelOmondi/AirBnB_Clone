@@ -6,7 +6,7 @@ import os
 from time import sleep
 
 
-class TestStateInit(unittest.TestCase):
+class Test_State_Init(unittest.TestCase):
     """Unit tests for instantiation of the State class."""
 
     def test_id(self):
@@ -65,7 +65,7 @@ class TestStateInit(unittest.TestCase):
                       " 38, 48339)", state1_str)
 
 
-class TestStateSave(unittest.TestCase):
+class Test_State_Save(unittest.TestCase):
     """Unit tests for the save method of the State class."""
 
     def setUp(self):
@@ -123,7 +123,7 @@ class TestStateSave(unittest.TestCase):
             state().save("hi")
 
 
-class TestStateToDict(unittest.TestCase):
+class Test_State_To_Dict(unittest.TestCase):
     """Unit tests for the to_dict method of the State class."""
 
     def setUp(self):
