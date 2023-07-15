@@ -779,6 +779,7 @@ class Test_console_destroy(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             self.assertNotIn(data, storage.all())
 
+
 class Test_console_all(unittest.TestCase):
     """unittests for the consoles all command."""
 
@@ -791,7 +792,7 @@ class Test_console_all(unittest.TestCase):
         except IOError:
             pass
         FileStorage._FileStorage__objects = {}
-    
+
     @classmethod
     def tearDown(self):
         """Restores original datafile if it existed."""
@@ -804,7 +805,7 @@ class Test_console_all(unittest.TestCase):
             os.rename("tempfile", "file.json")
         except IOError:
             pass
-    
+
     def test_all_unknown_classnames(self):
         """Tests the consoles all command with invalid claaname."""
 
@@ -905,7 +906,7 @@ class Test_console_all(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("all Review"))
             self.assertIn("Review", output.getvalue().strip())
-        
+
 
 class Test_console_update(unittest.TestCase):
     """unittests for the consoles update command."""
@@ -943,7 +944,7 @@ class Test_console_update(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".update()"))
             self.assertEqual(errormsg, output.getvalue().strip())
-    
+
     def test_update_unknown_classname(self):
         """Tests the consoles update command with an unknown classname."""
 
@@ -1238,7 +1239,7 @@ class Test_console_update(unittest.TestCase):
             runcmd = "Review.update(" + test_reviewId + " " + testattr + ")"
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             self.assertEqual(errormsg, output.getvalue().strip())
-        
+
     def test_update_missing_attr_value(self):
         """Tests the consoles update command with a missing attribute value.
         (space notation)
@@ -1250,7 +1251,7 @@ class Test_console_update(unittest.TestCase):
             test_BmodelId = output.getvalue().strip()
         with patch("sys.stdout", new=StringIO()) as output:
             testattr = "Test_attribute"
-            runcmd = "update BaseModel " + test_BmodelId + " " + testattr  
+            runcmd = "update BaseModel " + test_BmodelId + " " + testattr
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             self.assertEqual(errormsg, output.getvalue().strip())
         with patch("sys.stdout", new=StringIO()) as output:
@@ -1313,8 +1314,8 @@ class Test_console_update(unittest.TestCase):
             testattr = "Test_attribute"
             testval = "69"
 
-            runcmd = ("update BaseModel " + test_reviewId + " " + testattr + " "
-                      + testval)
+            runcmd = ("update BaseModel " + test_reviewId + " " + testattr +
+                      " " + testval)
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["BaseModel.{}".format(test_reviewId)].__dict__
             self.assertEqual(testval, data[testattr])
@@ -1384,7 +1385,7 @@ class Test_console_update(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Review.{}".format(test_reviewId)].__dict__
             self.assertEqual(testval, data[testattr])
-    
+
     def test_update_valid_attr_values_dot(self):
         """Tests the consoles update command with a valid attribute value.
         (with dot notation)
@@ -1466,12 +1467,11 @@ class Test_console_update(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Review.{}".format(test_reviewId)].__dict__
             self.assertEqual(testval, data[testattr])
-        
+
     def test_update_valid_attr_int_and_float_values(self):
-        """Tests the consoles update command with a valid float and interger 
+        """Tests the consoles update command with a valid float and interger
         attribute values.
         """
-        
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             test_reviewId = output.getvalue().strip()
@@ -1499,7 +1499,6 @@ class Test_console_update(unittest.TestCase):
         """Tests the consoles update command with a valid float and interger
         attribute values.
         """
-            
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             test_reviewId = output.getvalue().strip()
@@ -1507,7 +1506,7 @@ class Test_console_update(unittest.TestCase):
             testval = '69'
 
             runcmd = ("Place.update(" + test_reviewId + " " + testattr + " "
-                    + testval + ")")
+                      + testval + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Place.{}".format(test_reviewId)].__dict__
             self.assertEqual(int(testval), data[testattr])
@@ -1518,7 +1517,7 @@ class Test_console_update(unittest.TestCase):
             testval = '6.9'
 
             runcmd = ("Place.update(" + test_reviewId + " " + testattr + " "
-                    + testval + ")")
+                      + testval + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Place.{}".format(test_reviewId)].__dict__
             self.assertEqual(float(testval), data[testattr])
@@ -1527,14 +1526,14 @@ class Test_console_update(unittest.TestCase):
         """Tests the consoles update command with a valid dictionary value.
         (dot notation)
         """
-        
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create User"))
             test_UserId = output.getvalue().strip()
             testattr = "Test_attribute"
             testval = "69"
             test_dict = {testattr: testval}
-            runcmd = ("User.update(" + test_UserId + ", " + str(test_dict) + ")")
+            runcmd = ("User.update(" + test_UserId + ", " + str(test_dict)
+                      + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["User.{}".format(test_UserId)].__dict__
             self.assertEqual(testval, data[testattr])
@@ -1544,7 +1543,8 @@ class Test_console_update(unittest.TestCase):
             testattr = "Test_attribute"
             testval = "69"
             test_dict = {testattr: testval}
-            runcmd = ("State.update(" + test_UserId + ", " + str(test_dict) + ")")
+            runcmd = ("State.update(" + test_UserId + ", " + str(test_dict)
+                      + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["State.{}".format(test_UserId)].__dict__
             self.assertEqual(testval, data[testattr])
@@ -1554,7 +1554,8 @@ class Test_console_update(unittest.TestCase):
             testattr = "Test_attribute"
             testval = "69"
             test_dict = {testattr: testval}
-            runcmd = ("City.update(" + test_UserId + ", " + str(test_dict) + ")")
+            runcmd = ("City.update(" + test_UserId + ", " + str(test_dict)
+                      + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["City.{}".format(test_UserId)].__dict__
             self.assertEqual(testval, data[testattr])
@@ -1564,7 +1565,8 @@ class Test_console_update(unittest.TestCase):
             testattr = "Test_attribute"
             testval = "69"
             test_dict = {testattr: testval}
-            runcmd = ("Amenity.update(" + test_UserId + ", " + str(test_dict) + ")")
+            runcmd = ("Amenity.update(" + test_UserId + ", " + str(test_dict)
+                      + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Amenity.{}".format(test_UserId)].__dict__
             self.assertEqual(testval, data[testattr])
@@ -1574,7 +1576,8 @@ class Test_console_update(unittest.TestCase):
             testattr = "Test_attribute"
             testval = "69"
             test_dict = {testattr: testval}
-            runcmd = ("Place.update(" + test_UserId + ", " + str(test_dict) + ")")
+            runcmd = ("Place.update(" + test_UserId + ", " + str(test_dict)
+                      + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Place.{}".format(test_UserId)].__dict__
             self.assertEqual(testval, data[testattr])
@@ -1584,7 +1587,8 @@ class Test_console_update(unittest.TestCase):
             testattr = "longitude"
             testval = "6.9"
             test_dict = {testattr: testval}
-            runcmd = ("Place.update(" + test_UserId + ", " + str(test_dict) + ")")
+            runcmd = ("Place.update(" + test_UserId + ", " + str(test_dict)
+                      + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Place.{}".format(test_UserId)].__dict__
             self.assertEqual(float(testval), data[testattr])
@@ -1594,7 +1598,8 @@ class Test_console_update(unittest.TestCase):
             testattr = "number_rooms"
             testval = "69"
             test_dict = {testattr: testval}
-            runcmd = ("Place.update(" + test_UserId + ", " + str(test_dict) + ")")
+            runcmd = ("Place.update(" + test_UserId + ", " + str(test_dict)
+                      + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Place.{}".format(test_UserId)].__dict__
             self.assertEqual(int(testval), data[testattr])
@@ -1604,7 +1609,8 @@ class Test_console_update(unittest.TestCase):
             testattr = "Test_attribute"
             testval = "69"
             test_dict = {testattr: testval}
-            runcmd = ("Review.update(" + test_UserId + ", " + str(test_dict) + ")")
+            runcmd = ("Review.update(" + test_UserId + ", " + str(test_dict)
+                      + ")")
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Review.{}".format(test_UserId)].__dict__
             self.assertEqual(testval, data[testattr])
@@ -1695,6 +1701,7 @@ class Test_console_update(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(runcmd))
             data = storage.all()["Review.{}".format(test_UserId)].__dict__
             self.assertEqual(testval, data[testattr])
+
 
 class test_console_count(unittest.TestCase):
     """Tests the consoles count command"""
