@@ -21,9 +21,11 @@ class BaseModel:
 
         if len(kwargs) != 0:
             for key, value in kwargs.items():
+                if key == "__class__":
+                    continue
                 if key == "created_at" or key == "updated_at":
                     setattr(self, key, datetime.fromisoformat(value))
-                elif key != "__class__":
+                else:
                     setattr(self, key, value)
         else:
             models.storage.new(self)
