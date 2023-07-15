@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-"""Defines a class BaseModel."""
-from datetime import date, datetime
+"""Defines a class BaseModel. """
+from datetime import datetime
 from uuid import uuid4
 import models
 
@@ -19,20 +19,16 @@ class BaseModel:
         self.updated_at = datetime.now()
         ISOformat = "%Y-%m-%dT%H:%M:%S.%f"
 
-        if len(kwargs) != 0:
+        if kwargs:
             for key, value in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.fromisoformat(value))
-                elif key != "__class__":
-                    setattr(self, key, value)
+                if key == "__class__":
+                    continue
+                elif key == "created_at" or key == "updated_at":
+                    self.__dict__[key] = datetime.strptime(value, ISOformat)
+                else:
+                    self.__dict__[key] = value
         else:
             models.storage.new(self)
-
-    def __str__(self):
-        """Returns a string representation of an instance."""
-        classname = self.__class__.__name__
-
-        return "[{}] ({}) {}".format(classname, self.id, self.__dict__)
 
     def save(self):
         """Updates the updated_at attribute."""
@@ -44,7 +40,14 @@ class BaseModel:
         """Returns the dictionary representation of an instance."""
 
         tempdict = self.__dict__.copy()
+        tempdict["__class__"] = self.__class__.__name__
         tempdict["created_at"] = self.created_at.isoformat()
         tempdict["updated_at"] = self.updated_at.isoformat()
-        tempdict["__class__"] = self.__class__.__name__
+
         return tempdict
+
+    def __str__(self):
+        """Returns a string representation of an instance."""
+        classname = self.__class__.__name__
+
+        return "[{}] ({}) {}".format(classname, self.id, self.__dict__)
