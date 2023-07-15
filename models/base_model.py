@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Defines a class BaseModel. """
+"""Defines a class BaseModel."""
 from datetime import datetime
 from uuid import uuid4
 import models
@@ -24,7 +24,7 @@ class BaseModel:
                 if key == "created_at" or key == "updated_at":
                     self.__dict__[key] = datetime.strptime(value, ISOformat)
                 elif key != "__class__":
-                    self.__dict__[key] = value
+                    setattr(self, key, value)
         else:
             models.storage.new(self)
 
