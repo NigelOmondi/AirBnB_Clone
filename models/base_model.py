@@ -14,11 +14,8 @@ class BaseModel:
                 :: *args(*): Unutilised.
                 :: **kwargs(dict): A Key/Value pair of arguments/attributes
         """
-        self.id = str(uuid4())
-        self.created_at = datetime.today()
-        self.updated_at = datetime.today()
-        ISOformat = "%Y-%m-%dT%H:%M:%S.%f"
 
+        ISOformat = "%Y-%m-%dT%H:%M:%S.%f"
         if len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -26,6 +23,9 @@ class BaseModel:
                 else:
                     self.__dict__[key] = value
         else:
+            self.id = str(uuid4())
+            self.created_at = datetime.today()
+            self.updated_at = datetime.today()
             models.storage.new(self)
 
     def save(self):
