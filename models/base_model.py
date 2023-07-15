@@ -14,10 +14,6 @@ class BaseModel:
                 :: *args(*): Unutilised.
                 :: **kwargs(dict): A Key/Value pair of arguments/attributes
         """
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-        ISOformat = "%Y-%m-%dT%H:%M:%S.%f"
 
         if len(kwargs) != 0:
             for key, value in kwargs.items():
@@ -28,6 +24,10 @@ class BaseModel:
                 else:
                     setattr(self, key, value)
         else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            ISOformat = "%Y-%m-%dT%H:%M:%S.%f"
             models.storage.new(self)
 
     def __str__(self):
