@@ -15,8 +15,8 @@ class BaseModel:
                 :: **kwargs(dict): A Key/Value pair of arguments/attributes
         """
         self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        self.created_at = datetime.today()
+        self.updated_at = datetime.today()
         ISOformat = "%Y-%m-%dT%H:%M:%S.%f"
 
         if kwargs:
@@ -31,18 +31,16 @@ class BaseModel:
     def save(self):
         """Updates the updated_at attribute."""
 
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.today()
         models.storage.save()
-
 
     def to_dict(self):
         """Returns the dictionary representation of an instance."""
 
         tempdict = self.__dict__.copy()
-        tempdict["__class__"] = self.__class__.__name__
         tempdict["created_at"] = self.created_at.isoformat()
         tempdict["updated_at"] = self.updated_at.isoformat()
-
+        tempdict["__class__"] = self.__class__.__name__
         return tempdict
 
     def __str__(self):
