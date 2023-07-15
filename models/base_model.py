@@ -19,7 +19,7 @@ class BaseModel:
         self.updated_at = datetime.today()
         ISOformat = "%Y-%m-%dT%H:%M:%S.%f"
 
-        if kwargs:
+        if len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     self.__dict__[key] = datetime.strptime(value, ISOformat)
