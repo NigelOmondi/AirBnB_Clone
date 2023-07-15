@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """Defines a class BaseModel."""
+
+
 from datetime import datetime
 from uuid import uuid4
 import models
@@ -7,7 +9,6 @@ import models
 
 class BaseModel:
     """Represents the Base model class for other classes. """
-
     def __init__(self, *args, **kwargs):
         """Initialises a new instance of the BaseModel class.
            Attr:
