@@ -28,6 +28,12 @@ class BaseModel:
         else:
             models.storage.new(self)
 
+    def __str__(self):
+        """Returns a string representation of an instance."""
+        classname = self.__class__.__name__
+
+        return "[{}] ({}) {}".format(classname, self.id, self.__dict__)
+
     def save(self):
         """Updates the updated_at attribute."""
 
@@ -42,9 +48,3 @@ class BaseModel:
         tempdict["updated_at"] = self.updated_at.isoformat()
         tempdict["__class__"] = self.__class__.__name__
         return tempdict
-
-    def __str__(self):
-        """Returns a string representation of an instance."""
-        classname = self.__class__.__name__
-
-        return "[{}] ({}) {}".format(classname, self.id, self.__dict__)
