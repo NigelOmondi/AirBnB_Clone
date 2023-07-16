@@ -155,7 +155,7 @@ class TestReview_to_dict(unittest.TestCase):
 
     def test_to_dict_contains_correct_keys(self):
         rvw = Review()
-        self.assertIn("id", rv.to_dict())
+        self.assertIn("id", rvw.to_dict())
         self.assertIn("created_at", rvw.to_dict())
         self.assertIn("updated_at", rvw.to_dict())
         self.assertIn("__class__", rvw.to_dict())
@@ -178,7 +178,7 @@ class TestReview_to_dict(unittest.TestCase):
         dt = datetime.today()
         rvw = Review()
         rvw.id = "123456"
-        rvw.created_at = rv.updated_at = dt
+        rvw.created_at = rvw.updated_at = dt
         tdict = {
             'id': '123456',
             '__class__': 'Review',

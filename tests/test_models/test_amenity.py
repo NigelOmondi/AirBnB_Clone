@@ -9,7 +9,7 @@ TestCase classes:
 """
 
 import unittest
-import time
+from time import sleep
 from datetime import datetime
 import models
 from models.amenity import Amenity
@@ -62,12 +62,12 @@ class TestAmenity_instantiation(unittest.TestCase):
         dt_repr = repr(dt)
         amty = Amenity()
         amty.id = "123456"
-        amty.created_at = am.updated_at = dt
-        amstr = amty.__str__()
-        self.assertIn("[Amenity] (123456)", amstr)
-        self.assertIn("'id': '123456'", amstr)
-        self.assertIn("'created_at': " + dt_repr, amstr)
-        self.assertIn("'updated_at': " + dt_repr, amstr)
+        amty.created_at = amty.updated_at = dt
+        amtystr = amty.__str__()
+        self.assertIn("[Amenity] (123456)", amtystr)
+        self.assertIn("'id': '123456'", amtystr)
+        self.assertIn("'created_at': " + dt_repr, amtystr)
+        self.assertIn("'updated_at': " + dt_repr, amtystr)
 
     def test_args_unused(self):
         amty = Amenity(None)
@@ -88,7 +88,7 @@ class TestAmenity_instantiation(unittest.TestCase):
 
 
 class TestAmenity_save(unittest.TestCase):
-    """Unittests for testing save method of the Amenity class."""
+    """Testing save method of the Amenity class."""
 
     @classmethod
     def setUp(self):
@@ -110,9 +110,9 @@ class TestAmenity_save(unittest.TestCase):
     def test_one_save(self):
         amty = Amenity()
         sleep(0.05)
-        first_updated_at = am.updated_at
+        first_updated_at = amty.updated_at
         amty.save()
-        self.assertLess(first_updated_at, am.updated_at)
+        self.assertLess(first_updated_at, amty.updated_at)
 
     def test_two_saves(self):
         amty = Amenity()
@@ -180,7 +180,7 @@ class TestAmenity_to_dict(unittest.TestCase):
 
     def test_contrast_to_dict_dunder_dict(self):
         amty = Amenity()
-        self.assertNotEqual(am.to_dict(), amty.__dict__)
+        self.assertNotEqual(amty.to_dict(), amty.__dict__)
 
     def test_to_dict_with_arg(self):
         amty = Amenity()
