@@ -1,10 +1,11 @@
 <p align="center">
-  <img src="https://github.com/Imukua/AIRBNB_CLONE/blob/master/assets/Hogo.png" alt="Hbnb logo">
+  <img src="https://github.com/Imukua/AirBnB_clone/blob/main/assets/Hlogo.png" alt="Hbnb logo">
 </p>
 
 <h1 align="center">HBNB</h1>
 <p align="center">An AirBnB clone.</p>
 
+---
 
 # AirBnB Clone - command interprator🏠
 
